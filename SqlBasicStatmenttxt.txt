@@ -1,0 +1,357 @@
+
+Veri tabanı Nedir ??? 
+	Veri tabanları verilerin depolanması ve onların yönetilmesine olanak taşıyan yapılardır. 
+	
+	E - tablolar olarak isimlendirilebilen excel veya google e- table gibi platformlar , 
+	Kullanım kolaylığı , anlaşılabilirlik açısından küçük boyutlu verilerin saklanıp verilerin yönetilmesini sağlamak açısından kullanılmaktadır. 
+	
+	Fakat saklanacak verilerin boyutları artınca yönetim zorlaşır. 
+	ve e-table lar verilerin kalıcılığı ile ilgili database systemler kadar güvenli değildirler. 
+	Verilerin colummlardana kolaylıkla değiştirilebilmesi pekte istenilen bir şey değildir. 
+	
+	
+	
+	SQL database teki datalar ile ile iletişim kurmak için kullanılır. 
+	
+	
+	
+	Temel SQL Syntaxları 
+		**SELECT** 
+			SELECT belirtilen tablodaki ilgili columnları seçmek için seçmek için kullanılır. 
+		
+		**FROM** 
+			İlgili tabloyu belirtmek için kullanılır. 
+			
+			
+		İlk olarak FROM table_name bölümü okunur. 
+		Daha sonra ise SELECT ile okunan tablodan istenilen column ya da columnlar seçilir. 
+		
+		Çok tavsiye edilmese de tablonun genel hatlarını görmek adına tüm columnları görmek adına * sembolü SELECT sonrası kullanılır. 
+		
+		
+		
+		SELECT * FROM customer; 
+			customer tablosundaki tüm columnları bize getirmiş olunur. 
+		
+		
+		Database ile ilgili sorgulama yapmadan önce bakılmak isetene table belirlenmelidir. 
+		
+		Adım 1 : İlk olarak ilgili columnların olduğu table belirlenir. 
+		Adım 2 : ilgili tablonun tüm halini görmek adına SELECT * from table_name yapısı kullanılır. 
+		Adım 3 : Daha sonra tablonun aranan columnlarına SELECT column_name FROM table_name kullanılır. 
+		
+		
+		Örnek Problem 
+			DVD_RENT example database içerisindeki first_name last_name ve email_address sorgulaması yapılması 
+			
+			Adım 1 : İlgili databseda belirtlilen columnların customer table'ında olduğu düşünülmektedir. 
+			
+			Adım 2 : SELECT * from customer 
+				customer tableındaki tüm columlara bakım gerçekten aradaığımız columnların burada olup olmadığına bakarız 
+				
+			Adım 3 : SELECT first_name , last_name , email_address FROM customer 
+					İstenilen column namelar aralarına virgül konularak var olan table'dan seçilir. 
+					
+			Örnek Problemin çözüm adımları bu şekildedir. 
+			
+		
+		
+		**SELECT DISTINCT** 
+			DISTINCT keywordü ile birlikte , seçilen columnlarda benzersiz (unique) verilerin gösterilmesi sağlanmış olunur. 
+			SELECT ile ilgili column seçilirken DISTINCT ile seçilen columnların row degerleri okunup aralarında tekar edenler olur ise onları bir kez gösterir. 
+			
+			Burada ilgili columndaki row degerlerin tekar edenlerin gerçekten aynı degeri temsil mi edilyor yoksa degerlerin aynı şeyi temsil etmese sadece aynı degerde olması önemli değildir. 
+			Deger bazlı bir kontrol yapılır. 
+			
+			DISTINCT ile seçilen columndaki rowlar bakılıp aynı degerdekiler birkez gösterilir hale gelinir. 
+			
+			
+			Örnek Problem 
+				Elimizdeki dvdrent databaseinde var olan film puanlama sistemlerini tekrar eden degerler birkez gösterilecek şekilde SQL sorgusu yazmak ister isek , 
+				
+				Adım 1 : film rating columnun olduğu tablo bulunmalıdır
+					ilgili database için bu film tabledır 
+					
+				Adım 2 : İlgili tableda gerçekten bu  column var mı kontrolü yapılmalıdır 
+					Bunu yapmanın 2 yolu vardır 
+						Eğer ilgili table çok büyük olmadığını düşünüyorsanız 
+							SELECT * FROM film yapılabilir 
+							
+						Bir diğer yöntem ise bir DB manage arayüzü kullanılıryor ise burada , 
+							UI özelliklerini kullanırız. 
+							
+				Adım 3: SELECT DISTINCT (film_rating) FROM film 
+						İlgili SQL sorgusu yazımı 
+							film tablosundan , 
+								film_rating columnun okunması sağlanır. 
+									DISTINCT keywordü ile birlikte ilgili columnun rowlarının tekar eden degerleri var ise bunlar birkez gösterilecek şekilde olur. 
+						
+						
+						
+		**COUNT**
+			COUNT database'de belirtilen tabledaki belirtilen columnda kaç satır olduğunu geriye sayı olarak döndürülmesini sağlar. 
+				Bu row degerlerini ne olduğu geriye dönmeyecektir .
+				
+				Eğer DISTINCT keyowordü ile birlikte kullanılır ise , 
+					rowdaki benzersiz satırların sayısını döner. 
+					
+				COUNT keyowordü ile ilgili önemli noktalar 
+					1 - COUNT geriye bir sayı döner ,
+						rowların degerlerini dönmez 
+					2- COUNT kullanımında dönülen sayı tabledaki tüm columnlar için aynıdır. 
+						Bu yüzden genellikle * kullanılır. 
+							Fakat okunabilirlik ve anlaşılabilirlik açısından sayılmasını istediğimiz sutunun ismini yazmakta iyi bir pratik olabilir .
+							
+			Örnek Problem 
+				
+				dvdrent database içinde filmler için yapılan farklı ödeme sayılarını öğrenmek ister isek , 
+				
+					Adım 1 : İlgili databaseden öğrenmek istediğimiz column hangi table olduğunu bulmamız gerekir .
+							 Burada payment tabledadır 
+							    
+								Dogruluğunu kontrol etmek adına 
+									SELECT * FROM payment
+								
+								Aradığımız column amount ve onu burada olduğunu kontrol ediyoruz . 
+							 
+					Adım 2 : İlgili table bulduktan sonra table içerisindeki ilgili column bulunması istenebilir 
+							 Burada payment table'ındaki amonut column istediğimiz vermektedir. 
+							
+							
+					Adım 3: Farklı amount sayısını bulmak için , 
+					
+							SELECT DISTINCT(amount) FROM payment 
+								BU SQL sorgusu payment tablosundaki amount column rowlarındaki farklı valueları döndürür. 
+								
+							SELECT COUNT(DISTINCT(amount)) FROM payment 
+								BU SQL sorgusu payment tablosundaki amount columndaki rowlardaki farklı valueların sayısını geriye döndürür 
+									Geriye dönen bir sayıdır. 
+										Geriye dönen column name SQL istemcisine bağlı olarak COUNT veya COUNT(DISTINCT(amount)) olabilir
+										
+										
+										
+										
+			**WHERE**
+				ilgili databasedan seçilen column rowlarında birer filterleme işlemi için kullanılır. 
+					WHERE keywordü ile birlikte 
+						Matematiksel Karşılaştırma Operatörü 
+							VE 
+						Mantıksal (Logical) Operatörü kullanılmaktadır
+						
+						Karşılaştırma Operatörü
+							> Büyük
+							< Küçük
+							>= Büyük Eşit
+							<= Küçük Eşit
+							== Eşit mi 
+							!= Eşit değil mi
+
+						Mantıksal Operatör
+							AND --> Aynı anda belirtilen iki koşulun da true olması istenir 
+							OR ---> Aynı anda belirtilen koşullardan birinin true olması yeterlidir 
+							NOT --> Koşulun sağlanmadığı durumları getirilmesi için kullanılır. 
+							
+			
+			SELECT * FROM customer 
+				Tüm customer tabledaki tüm columnları getirir. 
+				
+			
+			SELECT * FROM customer 
+			WHERE first_name='Jared'; 
+				
+				
+				
+			SELECT * FROM film; 
+			WHERE rental_rate >4 AND replacement_cost >=19.99 
+			
+			
+		Örnek Problem 
+			Nancy Thomas isimli müşterinin e-posta adresi neidr ? 
+			
+			Adım 1 : İlgili tabloyu bul 
+				İlgili tablo customer tablosu 
+			
+			Adım 2 :  İlgili tablodaki sutunu bul 
+				İlgili sutun email_address
+					
+			SELECT email_address FROM customer 
+			WHERE first_name = 'Nancy' AND last_name=='Thomas';
+		
+		
+		Örnek Problem 
+			Outlaw Hanky filminin açıklamasını getir. 
+			
+			Adım 1 : İlgili tabloyu bul 
+				İlgili tablo film tablosu 
+
+			Adım 2 : İlgili tablodaki sütunu bul 
+				sütun ise description 
+			
+			SELECT description FROM film 
+			WHERE title  = 'Outlaw Hanky'; 
+		
+		
+		Örnek Problem 
+			259 Ipoh Drive adresine sahip kişinin telefon numarasını seçmek istiyoruz. 
+			
+			SELECT phone FROM address
+			WHERE address = '259 Ipoh Drive'; 
+			
+			
+		
+		
+		**ORDER BY**
+			Belirlediğimiz tablodaki belirldeğimiz sütunun rowlarındaki değerlerin artan veya azalan olarak sırlanmasını sağlamak için kullanılan bir SQL keywordüdür. 
+			
+			sentaksı şu şekilde olur, 
+				SELECT column_name FROM table_name 
+				ORDER_BY column_name_that_ordering ASC or DESC 
+				
+				Artan ASC veya Azalatan DESC
+				
+				
+			SELECT * FROM cutsomer 
+			ORDER_BY first_name 
+				first_name column'un satırlarındaki degerler artan bir sırada sıralanacaktır. 
+				
+				Bir sıralanma şekli belirtilmedikçe , 
+				ASC şekilde artan olarak sıralanır. 
+				
+			SELECT customer_id , first_name , last_name FROM customer 
+			ORDER_BY customer_id , first_name 
+			
+				Burada customer_id ilk olarak default olarak belirtildiği için artan bir sırada sıralanır. 
+				Eğer tekrar eden (Bu kısım oldukça önemli) değer var ise o zaman orada da first_name default olarak belirtildiği için , 
+				artan bir sırada sıralanır .
+				
+				Tekrar eden kısım olması ORDER_BY'da verilen ikinci column degerine göre sıralanması sağlanır. 
+				
+				Yani şu -> Eğer tekrar eden bir kısım yok ise ORDER_BY da ikinci olarak verilen column name bir önem kazanmaz 
+				
+			
+				
+		**LIMIT**
+			İlgili sql query sonucu elde edilecek sonucun belirli sayıda row ile sınırlandırılmasını sağlar 
+			
+			sql keywordlerinde belirli bir execution order vardır. 
+			LIMIT keywordü bu execution orderda en son sıradadır. Bu yüzden querynin en sonun yazılır. 
+			
+			Execution orderda şu şekilde bir öncelik sırlaması vardır 
+				1-FROM  
+				2-WHERE
+				3-ORDER BY 
+				4-LIMIT 
+					
+					İlk olarak databasedan ilgili tablo seçilir 
+						Daha sonra ise WHERE ile bir filtreleme yapılır. 
+						Yapılan bu filtreleme row bazlıdır 
+							 
+							Daha sonra columndaki rowlardaki degere göre bir sıralama yapılır 
+							ORDER_ BY execute edilir
+								En son ilgili rowların gösterilirken belirli satıra kadar gösterilmseini sağlamak adına LIMIT keywordü kullanılır 
+								
+								
+				
+		ÖRNEK Problem 
+			Ödeme yapan ilk on müştereye hediye verilmesi istenir ise nasıl bir sql query yazılması gerekir ? 
+			
+				SELECT customer FROM customer
+				ORDER BY payment_date ASC 
+				LIMIT 10;
+				
+		ÖRNEK Problem
+			Süre bakımından en kısa 5 film hangileridir. 
+			
+				SELECT title , length FROM film
+				ORDER_BY length ASC
+				LIMIT 5;
+				
+		ÖRNEK Problem 
+			Bir müşteri 50 veya daha kısa süreli bir film izleyebiliyor ise ,
+			bu durumda kaç adet film seçeneği vardır 
+				
+				Burada kaç adet olması bize COUNT keywordünü düşündürmeli 
+				COUNT içerisinde title saymamız okunabilirliği ve anlaşılabirliği sağlamak için kullanılmıştır 
+					yoksa ilgili tablodaki tüm sütunlar aynı sayıda rowa sahip olacağı için bu durumda COUNT sonucu aynı sayı döner.  
+				SELECT count(title) FROM film
+				WHERE length<=50
+				ORDER_BY length ASC;
+				
+		**BETWEEN** 
+				İlgilenilen tablonun ilgilinen sütunundaki degerlerin belirli bir alt ve üst sınır arasına düşüp düşmediğini kontrol etmek için kullanılır 
+				
+				WHERE ile birlikte kullanılır. 
+				WHERE'den ayrı olarak düşünülmemelidir. 
+				
+				WHERE >= AND <= kullanmak yerine sql'de BETWEEN keywordü kullanılabilir. 
+				
+				SAYILAR , SAATLER ve TARİHLER ile birlikte kullanılır. 
+				
+				ALT ve ÜST degerler lower_value ve upper_value bu aralığa dahil edilmektedir . 
+		**IN** 
+
+			WHERE keywordü ile birlikte birden fazla koşulu OR logic operatörü ile ayrı ayrı kontrol etmek yerine , 
+			sql içerisinde yer alan IN keywordü ile birlikte bu işlem yapılabilir. 
+			
+			sentaksı şu şekildedir. 
+				SELECT * FROM table_name 
+				WHERE column_name IN (condition1 , condition2 , condition3 ....)
+				
+					conditionlar arasında OR logic operatörü işlendiği unutulmamalıdır. 
+					Çoklu koşullarda daha kolay bir sentaks sunar . 
+					
+		**LIKE and ILIKE**
+			sql querylerinde belirli pattern matchinglere uyulmasını sağlamak amacıyla kullanılmaktadır
+			
+			LIKE 
+				case sensitivy bir yapıdadır 
+				
+			ILIKE 
+				postgreSQL içerisinde olan bir keywordür. 
+					case insensitivy bir yapıdadır 
+					
+			Wild Card olarak kullanılan 
+				% ve _ operatörleri 
+				
+					% sınırsız sayıda karakter yerine geçerken 
+					_ ise sadece tek bir karakter yerine geçmektedir .
+					
+					
+				
+				
+			SELECT * FROM cutomer 
+			WHERE first_name LIKE 'J%' 
+			
+				customer table'ında first_name'i J ile başlayan tüm columnları getirir
+			
+		Section Challenge 
+			
+			1-Kaç tane paymnet transaction kaydın $5.00 olduğunu bul. 
+
+			SELECT COUNT(amount) FROM payment 
+			WHERE amount > 5
+			
+			
+			2-Kaç tane actörün first_name P ile başlıyordur 
+			
+			SELECT COUNT(first_name) FROM actor 
+			WHERE first_name LIKE 'P%';
+			
+			
+			3-Kaç tane farklı bölgeden müşteri vardır ? 
+			
+			SELECT COUNT(DISTINCT(district)) FROM address 
+
+			4-Farklı bölgelerden gelen müşteriler 
+			
+			SELECT DISTINCT(district) FROM address; 
+			
+			5- Kaç tana R ratingli ve kiralama fiyatı 5 il 15 dolar arasında olan film vardır ? 
+			
+			SELECT COUNT(*) FROM film 
+			WHERE rating = 'R' AND replacement_cost BETWEEN 5 AND 15 ; 
+			
+			6- Kaç film içerisinde Truman kelimesi başlığın herhangi bir yerinde geçiyordur ? 
+			
+			SELECT COUNT(*) FROM film 
+			WHERE title LIKE '%Truman%';
