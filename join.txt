@@ -1,0 +1,186 @@
+Introduction to JOINS 
+-------------------------------------
+
+Bölüm schedule şu şekilde olacaktır. 
+
+Aliasing vermeyi öğreneceğiz 
+	-AS keywordü 
+	
+JOIN keywordünü ve farklı JOIN türleri incelenecektir 
+	INNER JOIN 
+	OUTLER JOIN 
+	FULL JOIN 
+	UNIONS 
+	
+----------------------------------------
+
+Aliasing 
+	
+	Sentaksı şu şekildedir. 
+		SELECT column AS column_giving_name FROM table 
+		
+		SELECT AGG_FUNC(column) AS giving_name FROM table
+		
+
+WHERE veya GROUP BY ile birlikte kullanılamaz. 
+
+SQL query'nin en sonunda çalışır. 
+
+
+
+SELECT COUNT(*) AS num_transactions
+FROM paymnet 
+
+
+
+SELECT customer_id , SUM(amount) AS total_spent 
+FROM paymnet 
+GROUP BY customer_id
+HAVING SUM(amount) > 100
+	  // total_spent burada kullanamayacak ÇÜNKÜ aliasing en sonda çalıştırılan kısımdadır 
+	
+	
+--------------------------------------------------
+
+
+INNER JOIN 
+	Diğer inner join türlerine göre daha kolay anlaşılabir
+	
+	Join işlemleri temel olarak farklı tableları bir araya getirilmesi olarak düşünülebilir 
+	
+	SELECT * FROM TABLE_A
+	INNER JOIN TABLE_B                                 ----> Kesişimlerini alırız 
+	ON TABLE_A.col_match = TABLE_B.col_match 
+	
+	
+	Registrations ve Logins tablelarını name column üzerinden birleştir. 
+	
+	SELECT * FROM Registrations 
+	INNER JOIN Logins 
+	ON Registrations.name = Logins.name 
+		
+		Bu query ile birlikte tüm columnların dönülmesi sağlanır. Çünkü * kullanıldı 
+	
+	
+	
+	SELECT reg_id , Logins.name ,log_id FROM Registrations
+	INNER JOIN Logins 
+	ON Logins.name = Registrations.name 
+	
+		Bu query ile birlikte , tekar eden column olan name bir kez seçilmiş olunur. 
+		
+	join -> inner join'in kısaltmasıdır. 
+	
+	
+	inner join ile birlikte ben iki tablodaki kesişim alanı üzerinden birleştirme yapmış olurum. 
+	
+	
+FUll OUTLER JOINS
+	Temel join mantığında olduğu gibi burada da iki table bir column üzerinden birleştirilmektedir. 
+	Inner joinden farklı olarak burada columndaki ortak dataların birleştirilmesinden ziyade iki tabledaki columndaki tüm degerler alınır diğer tableda karşılığı yok ise o zaman sql tarafından null degeri atanmış olunur . 
+	
+	sentaksı şu şekildedir. 
+		SELECT * FROM TABLE_A 
+		FULL OUTLER JOIN TABLE_B 
+		ON TABLE_A.col = TABLE_B.col 
+		
+		
+	
+	WHERE koşulu ile birlikte eşleşmeyen degerlerin gösterimi de yapılır 
+	Bu da sık kullanım yöntemidir. 
+	
+	
+		SELECT * FROM TBALE_A
+		FULL OUTLER JOIN TABLE_B
+		ON TABLE_A.col = TABLE_B.col
+		WHERE TABLE_A.id IS NULL or TABLE_B.id IS NULL 
+		
+LEFT OUTLER JOIN
+	Solda kalacak table tamanı ve sağdaki table ortak olan kısmını alınmasıdır 
+	
+	SELECT * FROM TABLE_A 
+	FULL OUTLER JOIN TABLE_B 
+	ON TABLE_A.col_match = TABLE_B.col_match
+	
+	
+	SELECT * FROM Registrations 
+	LEFT OUTLER JOIN Logins
+	ON Registrations.name = LOGINS.name 
+	
+		Burada Registrations table ile Logins birleştirilir. 
+		Fakat burda left join uygulanır. 
+		Table sıralamaları önemli hale gelmiştir 
+		Birleştirme Registrations table üzerinden yapılmaktadır 
+		Registrations elemanlarının tamamı ve Login ile ortak olan kısımlar alınmış olunur. 
+		eşleşme olmayan kısımlar null olarak atanır 
+		
+		
+		null olmayan verileri almak istemiyor isek , 
+		bu durumda A/B gibi sadece A kümseinde olan elemanları almak istiyor isek 
+		
+		SELECT * FROM TABLE_A
+		LEFT OUTLER JOIN TABLE_B
+		ON TABLE_A.col = TABLE_B.col 
+		WHERE TABLE_B.id IS NULL       
+			Bu query ile birlikte A tablosunda olup B tablosunda olmayan ve olmadığı için null olanları filtreleyip A/B seçebiliriz 
+		
+		
+		
+		SELECt film.film_id , title inventory_id ,store_id
+		FROM film 
+		LEFT JOIN inventory ON 
+		inventory.film_id = film.film_id
+		WHERE inventory.film_id IS NULL 
+		
+		
+RIGHT JOIN 
+	right join left join ile temel olarak aynı sentaksa sahip olup birleştirmenin venn diagramının solunda yer alıyor olmasıdır 
+	
+	SELECT * FROM TABLE_A 
+	RIGHT OUTLER JOIN TABLE_B 
+	ON TABLE_A.col = TABLE_B.col 
+	
+UNION 
+	SELECT sorgularının birleştirilmesini sağlayan bir yapıdır . 
+	
+	UNION kullanırken dikkat edilmesi gereken birkaç nokta vardır 
+		Bunlar 
+			Kullanılan column sayısı aynı olmalı 
+			Kullanılan columnların veri tipleri birbirleri ile eşleşmeli 
+			Kullanılan columnların sırası aynı olmalıdır 
+			
+			
+	sentak şu şekildedir 
+		
+		SELECT column1 , column2 FROM TABLE_A
+		UNION
+		SELECT column1 , column2 FROM TABLE_B 
+	
+	Farklı veri tabanlarınındaki tableların select ile birleştirilmesi de sağlanır 
+	
+-- ORNEK PROBLEM --
+	Kalifornada yaşayan müşterilere e-posta ile bilgilendirme yapılması isteniyor 
+		
+		SELECT district, email FROM address 
+		INNER JOIN customer ON customer.address_id = address.addresss_id 
+		WHERE district = 'California' 
+	
+	
+	
+-- ORNEK PROBLEM -- 
+	Nick Wahlberg oynadığı filmlerin listesi 
+	
+	film ile actor arasında film_actor il bir köprü table var 
+	O yüzden iki tane farklı ınner join kullanılmalı 
+	
+	select first_name , last_name from film_actor
+    inner join actor
+	on film_actor.actor_id =actor.actor_id  
+	inner join film
+	on film.film_id =film_actor.film_id 
+	where actor.first_name = 'Nick' and actor.last_name = 'Wahlberg'	
+
+	
+	Birleşmiş aracı bir tabloyu başka bir tablo ile birleştirilmesi sağlanılıyor 
+	
+	
