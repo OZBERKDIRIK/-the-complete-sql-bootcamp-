@@ -1,0 +1,137 @@
+Group By 
+----------------------
+
+Aggregation function 
+----------------------
+
+Parametre olarak birden fazla deger alıp bu degerlere çeşitli davranışlar uygulayıp , 
+tek bir sonuç döndürülmesini sağlar. 
+
+Yaygın olarak kullanılan aggregatio functionlar 
+AVG() Parametre olarak verilen degerlerin ortalamasını bulur 
+COUNT() --> Parametre olarak verileb degerlerin sayısını verir 
+MAX () ---> Parametre olarak verilen degerler arasında max olan degeri bulur 
+MIN() ----> Parametre olarak verilen degerlerin min olanını bulur. 
+SUM() ----> Parametre olarak verilen degerlerin toplamını bulur 
+
+
+AVG() 
+	basamak hassasiyetini ROUND() ile belirleyebiliriz. 
+	
+
+Aggregation funciton SELECT veya HAVING clauselar ile birlikte kullanılır. 
+
+EĞER single return value olan bir function kullanıyorsak column çağrısı yapamayız.
+
+
+GROUP BY 
+--------------------------
+
+GROUP BY
+	Adım 1 : İlk olarar çalışmak istediğimiz tabloyu seçiyoruz 
+	Adım 2 : Seçtiğimiz tabloda istediğimiz column seçiyorup 
+		Bu columndaki rowlardaki bulunan dataların grouplanması amacıyla GROUP BY keywordü kullanılır. 
+		Bu keyword sonucunda ilgili columndaki row getirilir. 
+		GROUP BY ile birlikte Aggregation function kullanılır/kulanılabilir. 
+	
+GROUP BY 
+	sentaks şu şekildedir 
+		SELECT category_col ,AGG(data_col)
+		FROM table 
+		GROUP BY category_col
+	
+	
+GROUP BY , WHERE veya FROM keywordünden sonra kullanılır 
+
+
+Group By kullanılırken dikkat edilmesi gereken noktalar, 
+
+1- data degerleri grouplanması istenen column seçilir . 
+
+2- grouplanan column degeri select ile seçilmelidir. Grouplanmayan columnların seçimi mantıklı degildir. 
+
+3- Eğer aggregation function kullanılacak ise bu ifade WHERE koşul olarak geçmemlidir  
+
+Çünkü Aggregation function bir grouplama yapıldıktan sonra gerçekleşir ve where group by keywordünden önce gelir. 
+
+Eğer aggregation function kullanılacak ise ve bunu şart olarak yazacak isek bu durumda , 
+HAVING keywordünü kullanmamız gerekir . 
+
+
+SELECT customer_id FROM payment 
+GROUP BY customer_id 
+
+---> Bu ifade farklı customer_id degerlerinin döndürülmesini sağlar  
+
+Aslında yukarıdaki query sorgusu ile aşağıdaki query sorgusu aynı işlevlidir. 
+
+SELECT DISTINCT(customer_id) FROM payment
+
+Burada customer_id columndaki farklı data degerlerinin döndürülmsei sağlanır . 
+
+GROUP By da kullanıldığında aynı işlevi yapmaktadır 
+
+ ** DATE ** 
+	
+	
+Örnek Problem 1 
+	paymnet tablosundaki staff_id 1 ve 2 degerlerine sahip olanların  amount sayılarını döndürülmesini istiyoruz 
+
+SELECT staff_id , COUNT(amount) FROM paymnet
+WHERE staff_id IN (1,2)
+GROUP BY staff_id
+
+
+
+Örnek Problem 2 
+	Film tablosundaki rating columnunu grouplayıp bunların kiralanma maliyetlerinin ortalamasını alan bir query yazılması isteniyor. 
+	
+SELECT rating , ROUND(AVG(replecment_cost),2) FROM film
+GROUP BY rating
+ 
+ 
+ 
+Örnek Problem 3 
+	Yapılan toplam harcalmaya göre ilk beş müşteriyi kupon ile ödüllendirilmesi isteniyor. 
+	Bunun için bir query yazınız. 
+	
+SELECT customer_id , SUM(amount) FROM payment
+GROUP BY customer 
+ORDER BY SUM(amount) DESC  
+LIMIT 5 
+
+
+
+HAVING clause 
+	GROUP BY sonrası filtreleme yapımında kullanılır 
+	Grup bazında bir filtreleme yaparken filtreleme elemanı olarak ise Aggregation function kullanılır . 
+	
+	
+SELECT company, SUM(sales) 
+FROM finance_table
+GROUP BY company 
+HAVING SUM(sales)>1000
+
+-> gruplanan company columunun SUM(sales) agg funcitona göre group bazında filtreleme yapılması sağlanır. 
+
+
+
+*** Örnek Problem *** 
+	40 veya daha fazla ödeme işlemi olan müşterileri platin olarak işaretlenecektir. 
+	Hangi müşteriler platin statusunda olacaktır. 
+	
+	
+SELECT customer_id , COUNT(amount) FROM payment 
+GROUP BY customer_id 
+HAVING COUNT(amount)>= 40 
+
+
+
+
+*** Örnek Problem **** 
+	Görevli id 2 aracılığıyla 100 veya daha fazla para harcayan müşterileri seçen query sorgusu 
+	
+SELECT customer_id , SUM(amount) FROM paymnet
+WHERE staff_id = 2 
+GROUP BY customer_id 
+HAVING SUM(amount) >= 100 
