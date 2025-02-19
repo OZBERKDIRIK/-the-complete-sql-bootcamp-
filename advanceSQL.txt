@@ -1,0 +1,101 @@
+Advanced SQL Query 
+---------------------------
+
+Timestamps and Extract 
+-----------------------
+
+Saat ve tarih işlemleri için olan fonksiyonlardır 
+
+-> Bu fonksiyonlar 
+	TIME -> Saat işlemleri 
+	DATE -> Tarih işlemleri 
+	TIMESTAMP -> tarih saat işlemleri 
+	TIMESTAMPZ -> tarih saat ve saat dilimi işlemleri 
+	
+			Bazı fonksiyonlar 
+				TIMEZONE ---> bilgisayarda aktif olan zaman dilimi parametresi 
+				NOW  ---> o anın timestampz degerini verir 
+				TIMEOFDAY ---> date degeri string olarak gelen timestampz 
+				CURRENT_TIME --> Aktif olan zamanı verir 
+				CURRENT_DATE --> Aktif olan tarihi verir 
+				
+	
+				
+	EXTRACT () 
+		Bir DATE türünden veriye sahip alan/alanların alt parçalara bölünmesini sağlayan programlardır 
+			EXTRACT(YEAR FROM date_col)
+	AGE()
+		parametre olarak date_col ile aktif olan zaman arasındaki farkı timestamp olarak hesaplar 
+		
+	TO_CHAR()
+	   timestap fromating için yararlı bir fonksiyondur 
+	   
+	   
+	-- ORNEK --
+		Pazartesi yapılan satıjların toplamı 
+			select count(*) as "Pzrt Yapılan Satışların Sayılarının toplamı" from payment
+			where extract (isodow from payment.payment_date) = 1 
+		
+			Burada extract ile birliklet isodow kullanldı 
+										ISO standartlarında day of week kullanldı 
+										
+	
+	
+	Mat Functin 
+	
+	
+	String Function
+		length 
+		string concunation ||
+		upper 
+		lower
+		left 
+	
+	ORNEK Problem 
+		email generate oluşturmak 
+		
+		
+		
+subQUERY 
+	Bir sorgu içerisinde daha fazla sorgu yazmamız gerekiyor ise o zaman kullanılır 
+	
+		subQUERY ilk olarak çalışır Parantez içerisinde yazılmalıdır 
+	ÖRNEK PROBLEM 
+		Bir sınıfta ortalamadan yüksek alan öğrenciler 
+			Select student_name from student 
+			where student.grade > (Select AVG(grade) from student) 
+	
+	
+	Exist 
+		subQUERY varlığını kontrol eder 
+			SELECT column_name 
+			FROM table_name 
+			WHERE exists 
+			(SELECT column_name FROM table_name WHERE condition)
+			
+	subQuery karşılaştırma operatörü kullanılması için bir aggregation funct kullanılması gerekir 
+	
+	
+	Eğer multiple value dönüyor ise o zaman IN operatörü kullanılır 
+	
+	
+	-- Ornek Problem --- 
+		Belirli tarihler arasında kiralanan filmlerin listesi 
+		
+		
+		
+		
+	self join 
+		Bir satırındaki verinin başka columndaki başka satır ile karşılaştırmasınıdır 
+		
+		
+		SELECT tableA.col , tableB.col 
+		FROM table as tableA 
+		JOIN table AS tableB on 
+		tableA.some_col = tableB.other.col
+		
+		
+	table içerisinede columnlardan ikisi birbirleri ile ilişkili ise , 
+	o zaman aynı table üzerinden bir birleştirilme işlemi uygulanır 
+	
+	Self Join, bir tablonun birden fazla satırını ya da tablodaki kolonların değerlerini birbirleriyle karşılaştırmak için kullanılır. Bu, genellikle aynı tablonun farklı satırlarını ilişkilendirme veya bir kolonun farklı değerleri arasında ilişki kurma gibi durumlarda tercih edilir.
