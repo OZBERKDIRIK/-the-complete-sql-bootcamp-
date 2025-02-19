@@ -45,6 +45,8 @@
 		select m.joindate from cd.members as m
 		oreder by joindate DESC  
 		limit 1 
+		
+		
 10- Produce a count of the number of facilities that have a cost to guests of 10 or more.
 		select count(*) from cd.facilities 
 		where guestscost >= 10; 
@@ -74,6 +76,17 @@
 		on b.facid = f.facid
 		where f.name like '%Tennis Court%'
 		and b.startime::date = '2012 - 09 -21'
+		
+		
+		
+		select f.name , b.starttime from cd.facilities f 
+		inner join cd.bookings b
+		on b.facid = f.facid
+		where f.name like '%Tennis Court%'
+		and b.starttime >= '2012-09-21'
+		and b.starttime < '2012-09-22'
+		order by b.starttime 
+		
 		
 14 - How can you produce a list of the start times for bookings by members named 'David Farrell'? 
 		
