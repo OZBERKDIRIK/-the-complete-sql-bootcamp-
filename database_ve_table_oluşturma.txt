@@ -1,0 +1,178 @@
+-Creating Database and Tables- 
+
+	--Bölüm İçeriği--
+		Data Tipleri 
+		Primary and Foreign Keys 
+		Constraints 
+		CREATE
+		INSERT
+		UPDATE
+		DELET , ALTER , DROP
+		
+		
+			Başlıca Veri Türleri 
+				Boolean 
+					True or False 
+				Character 
+					cahar , varchar , text 
+					
+				Numeric 
+					integer and floating-point number 
+					
+		Eğer aritmetik nir işlem yapmayacak ise varchar kullanmak çok daha iyi bir tercihtir. 
+		Bu database performansı için iyi bir yöntemdir .
+		
+		Bir tablo tasarlarken yapılması gereken ilk iş , databasede 
+		tabloda saklanacak kolonların belirlenmesidir. 
+		
+		Bu kolonların belirlenmesi işleminden sonra kolonların 
+		
+		
+		primary key ilgili tablodaki unique alandır. 
+		Genellikle id olarak isimlendirilir. Aynı deger tekrar edemez. Etmez. 
+		
+		
+		foreign key ise bir tablodaki primary key alanın başka tablodaki tutulmasıdır. 
+		
+		Foreign key ile başka bir tablodaki primary key alanına referans veririz. 
+		RDBMS 
+		
+		
+		Bir tablo ile ilgili select * from table_name sorgu çekildiğinda tablonun , 
+		primary key alanı PK olarak gözükür. 
+		
+		Foriegn key alanının da bir kısıtlama olduğu bilindiği ve 
+		hangi tabloya referans verildiğini 
+		
+		
+		
+		Constraints 
+			Bir tablonun tamamını kısıtlamak 
+				Check 
+				
+				Referenas 
+				
+				unique
+				
+				primary key 
+				
+					Burada birden fazla column listesi parametre olarak verilir 
+			
+			Bir tablonun belirli bir sutunu kısıtlamak 
+				Not Null
+				
+				Unique 
+				
+				primary key
+				
+				foreign key 
+				
+				check  -> columndaki tüm degerlerin belirlenen koşulu sağlaması 
+				
+				exclusion -> 
+				
+				
+				
+		Create table table_name (
+		column_name Type column_constraint, 
+		table_constraint 
+		
+		);
+		
+		
+		
+		SERIAL 
+			otomatik artan bir şekilde seri objectler oluşturulur 
+			Ve Benzersiz obje oluşmasını sağlar. 
+			
+			
+			primary key için çok iyi bir tiptir.
+			
+			
+			
+		Tablo oluşturma 
+			CREATE TABLE table_name (
+				column_name TYPE column_constraint , Bir sutuna birden fazla constraint verilebilir 
+			);
+			
+		Oluşturulmak istenen tablonun bir daha oluşturlmak istenmesi hataya neden olur 
+		
+		
+		column_name type references table(ilgili table'ın kolonu)
+		
+		
+		
+		INSERT 
+			Tabloya veri eklemek için kullanılan bir komuttur 
+			
+			
+		INSERT Into table_name (tablonun kolonları )
+		values 
+		(Her bir kolona eklemek istediğimiz veriyi giriyoruz.)
+		
+		
+		forign key alanları var olması 
+		
+		
+		UPDATE 
+			UPDATE table 
+			SET column = value 
+			where condition 
+		
+		
+		UPDATE account 
+		SET last_login = CURRENT.TIMESTAMP
+		WHERE last_login is not null 
+		
+		
+		
+		RETURNING --> Dogru bir şekilde güncellenip güncellenmediğini öğrenmek için kullanılır 
+		
+		
+		
+		DELETE FROM table 
+		WHERE con 
+		
+		DELETE FROM tableA 
+		USING tableB 
+		WHERE tableA.col = tableB.col 
+		
+		
+		
+		
+		ALTER table 
+			tablonun genelinde bir güncelleme  yapmak için kullanılr 
+			
+			
+			ALTER TABLE table_name
+			ALTER COLUMN column_name 
+			ADD , SET , DROP 
+			
+			
+			ALTER TABLE info 
+			RENAME TO information 
+			
+			ALTER TABLE information
+			RENAME column TO new_column_name
+			
+			
+			SET , DROP ile constraint ekleyebiliriz. 
+			
+			
+			ALTER TABLE table_name 
+			DROP COLUMN column_name 
+			
+			
+			-- Yaygın kullanım 
+				ALTER TABLE table_name 
+				DROP COLUMN IF EXISTS column_name 
+				
+				
+		CHECK 
+			ilgili columna set edilecek datalarına bir kısıtlama için kullanılır 
+			
+			
+		NOT NULL genelleştirilmiş bir CHECK olarak düşünülebilir 
+		
+			
+		

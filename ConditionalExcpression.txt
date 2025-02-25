@@ -1,0 +1,55 @@
+Conditional Statment And Prosedurler 
+
+
+--> CASE 
+	Programlamadaki if else 
+	
+	CASE 
+		WHEN condition1 THEN result1
+		WHEN condition2 THEN result2 
+		ELSE some_other_result 
+	END 
+	
+	
+	---> 
+		CASE a 
+			WHEN value THEN result1
+			WHEN valeu2 THEN result2
+			ELSE result_other  
+		END 
+		
+		
+		
+		
+	COALESCE 
+		select ile birlikte seçilmiş olan datalarda kontrol yapılıp , 
+		eğer null deger var ise default olarak belirlenen atamayı yapmayı yarar. 
+	
+	
+	CAST 
+		Dönüştürülebilecek verilerin başka veri türüne dönüştürülmesi işlemidir 
+		
+		
+		SELECT CAST ('5' AS INTEGER)
+		
+		
+		SELECT '5' :: INTEGER
+	
+	NULLIF --> PArametre olarak verilen 
+	
+	
+	VIEW 
+		CREATE VIEW 
+			select 
+			  --------
+			  
+		
+		
+		CREATE or REPLACE VIEW 
+
+
+		DROP VIEW 
+git
+		ALTER VIEW 
+	
+	select * from view_name 
